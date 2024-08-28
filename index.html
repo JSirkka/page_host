@@ -6,29 +6,30 @@
     <title>Load HTML from API</title>
 </head>
 <body>
-    <!-- Initially, the body is blank or can contain a loading message -->
-    <div id="loading">Loading content...</div>
+    <!-- Container for the fetched HTML content -->
+    <iframe id="contentFrame" style="width: 100%; height: 100vh; border: none;"></iframe>
 
     <script>
-        // Function to fetch HTML from the API and inject it into the document body
-        async function loadHtmlContent() {
+        // Function to fetch HTML from the API and load it into the iframe
+        async function loadHtmlIntoIframe() {
             try {
+                
                 const response = await fetch('https://jsirkka.pythonanywhere.com/get-html'); // Replace with your API URL
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const htmlContent = await response.text();
 
-                // Replace the body content with the fetched HTML
-                document.body.innerHTML = htmlContent;
+                // Select the iframe and set its content
+                const iframe = document.getElementById('contentFrame');
+                iframe.srcdoc = htmlContent; // Use srcdoc to directly inject the HTML
             } catch (error) {
                 console.error('Error fetching HTML content:', error);
-                document.getElementById('loading').textContent = 'Failed to load content. Please try again later.';
             }
         }
 
         // Call the function to fetch and display the HTML content
-        loadHtmlContent();
+        loadHtmlIntoIframe();
     </script>
 </body>
 </html>
